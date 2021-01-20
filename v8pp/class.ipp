@@ -142,6 +142,11 @@ V8PP_IMPL void object_registry<Traits>::remove_object(object_id const& obj)
 template<typename Traits>
 V8PP_IMPL void object_registry<Traits>::remove_objects()
 {
+	if (!v8::Locker::IsLocked(isolate_))
+	{
+		return;
+	}
+
 	v8::HandleScope scope(isolate_);
 	for (auto& object_wrapped : objects_)
 	{
